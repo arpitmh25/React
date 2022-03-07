@@ -8,7 +8,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      userName: ""
+      userName: "",
+      nameError: ""
     }
   }
 
@@ -17,11 +18,18 @@ class App extends React.Component {
     console.log("save button is clicked", event);
     window.open(this.url, "_blank");
   }
-  
+
   //onNameChangefunction
   onNameChange = (event) => {
     console.log("click", event.target.value);
-    this.setState({ userName: event.target.value })
+    const nameRegex = RegExp("^[A-Z]{1}[a-zA-z]{2,}$");
+    this.setState({ userName: event.target.value });
+    if (nameRegex.test(event.target.value)) {
+      this.setState({ nameError: "Name follows regex" })
+    }
+    else {
+      this.setState({ nameError: "Name does not follow regex" });
+    }
   }
   render() {
     return (
@@ -33,6 +41,7 @@ class App extends React.Component {
         </div >
         <div>
           <input onChange={this.onNameChange} />
+          <spam className="error-output">{this.state.nameError}</spam>
         </div>
       </>
     );
